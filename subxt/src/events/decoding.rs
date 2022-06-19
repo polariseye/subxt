@@ -28,6 +28,7 @@ use codec::{
     Codec,
     Compact,
     Decode,
+    Input,
 };
 use scale_info::{
     PortableRegistry,
@@ -198,7 +199,10 @@ pub fn decode_and_consume_type(
                     consume_type::<BitVec<u32, Lsb0>>(input)
                 }
                 TypeDef::Primitive(TypeDefPrimitive::U64) => {
-                    consume_type::<BitVec<u64, Lsb0>>(input)
+                    //consume_type::<BitVec<u64, Lsb0>>(input)
+                    let mut u64_val=[0u8;8];
+                    Input::read(input, u64_val.as_mut_slice())?;
+                    Ok(())
                 }
                 store => {
                     return Err(EventsDecodingError::InvalidBitSequenceType(format!(
